@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="conor.nolan.ancientgames">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_caeser"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_caeser"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".onthisday.OnThisDay" />
+        <activity android:name=".SetUp.SignInActivity" />
+        <activity android:name=".SetUp.Registration" />
+        <activity android:name=".SetUp.LoginActivity" />
+        <activity android:name=".quiz.quizHome" />
+        <activity android:name=".reading.readingHome" />
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".SetUp.LoadingAnimation"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

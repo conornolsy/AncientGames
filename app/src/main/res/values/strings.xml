@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name" translatable="false">AncientGames</string>
+    <string name="app_title" translatable="false">Ancient Games</string>
+    <string name="reading_button" translatable="false">Reading</string>
+    <string name="quizzes_button" translatable="false">Quiz</string>
+    <string name="onthisday_button" translatable="false">On this day</string>
+    <string name="login_button" translatable="false">Login</string>
+    <string name="register_button" translatable="false">Sign Up</string>
+    <string name="passwordConfirm" translatable="false">Confirm Password</string>
+    <string name="user_name">username</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="page_title">A title</string>
+    <string name="connection_error">Error text</string>
+    <string name="xml_error">XML error</string>
+    <string name="updated">Updated</string>
+</resources>
