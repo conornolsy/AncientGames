@@ -7,16 +7,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-//import conor.nolan.ancientgames.onthisday.OnThisDay;
 import conor.nolan.ancientgames.onthisday.OnThisDay;
-import conor.nolan.ancientgames.quiz.quizHome;
+import conor.nolan.ancientgames.quiz.QuizSetUp;
 import conor.nolan.ancientgames.reading.readingHome;
 
 public class MainActivity extends AppCompatActivity {
@@ -132,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void quizClicked(View view) {
-        Intent intent = new Intent(this, quizHome.class);
-        startActivity(intent);
+        QuizSetUp quiz = new QuizSetUp(this);
+
     }
 
     public void readingClick(View view) {
@@ -142,16 +140,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onThisDayClicked(View view) {
-        Intent intent = new Intent(this, OnThisDay.class);
-        startActivity(intent);
+      //  Intent intent = new Intent(this, OnThisDay.class);
+      //  startActivity(intent);
     }
 
-
- /**     Intent intent = new Intent(this, OnThisDay.class);
-        startActivity(intent);
-    }
-
-**/
 
 
 }

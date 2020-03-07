@@ -65,7 +65,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
                 String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8")
                         +"&"+URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
                 bufferedWriter.write(post_data);
-                bufferedWriter.flush();;
+                bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
 
@@ -182,7 +182,6 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
         // super.onPostExecute(aVoid);
         alertDialog.setMessage(result);
         alertDialog.show();
-
         if(result.equals("Registration Successful") || result.equals("Login Successful"))
         {
             context.startActivity(new Intent(context, MainActivity.class));

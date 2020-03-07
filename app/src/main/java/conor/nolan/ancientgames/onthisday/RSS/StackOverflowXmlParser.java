@@ -35,6 +35,13 @@ public class StackOverflowXmlParser {
                 continue;
             }
             String name = parser.getName();
+
+            if (name.equals("channel")) {
+                parser.next();
+            }
+
+
+
             // Starts by looking for the entry tag
             if (name.equals("item")) {
                 entries.add(readEntry(parser));

@@ -21,7 +21,7 @@ public class LoadingAnimation extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent=new Intent(LoadingAnimation.this, OnThisDay.class);
+                    Intent intent=new Intent(LoadingAnimation.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
