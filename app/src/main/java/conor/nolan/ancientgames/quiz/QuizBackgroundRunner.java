@@ -87,8 +87,6 @@ public class QuizBackgroundRunner extends AsyncTask<ArrayList,String,String> {
 
     @Override
     protected void onPostExecute(String result) {
-
-
         context.startActivity(
                 new Intent(context, QuizGame.class).putParcelableArrayListExtra("questionsArr", getQuestion())
         );

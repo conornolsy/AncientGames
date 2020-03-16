@@ -11,7 +11,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.ArrayList;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import conor.nolan.ancientgames.R;
 
@@ -79,6 +87,10 @@ public class Registration extends AppCompatActivity {
                 while(true) {
                     try {
                         Thread.sleep(sleep);
+                        email.bringToFront();
+                        username.bringToFront();
+                        password.bringToFront();
+                        confrimPassword.bringToFront();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         msg = e.getMessage();
@@ -104,7 +116,6 @@ public class Registration extends AppCompatActivity {
 
                     try {
                         Thread.sleep(2000);
-                        //   display.setVisibility(View.INVISIBLE);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         msg = e.getMessage();

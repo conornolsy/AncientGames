@@ -16,7 +16,7 @@ public class readingHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_home);
-        textView = (TextView) findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textViewQ);
         textView.setVisibility(View.VISIBLE);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(20);

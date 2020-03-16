@@ -12,10 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_caeser"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".quiz.QuizSelectMode"></activity>
         <activity
             android:name=".quiz.QuizResults"
             android:label="@string/title_activity_quiz_results"
-            android:theme="@style/AppTheme.NoActionBar.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
         <activity android:name=".quiz.QResults" />
         <activity android:name=".quiz.QuizGame" />
         <activity android:name=".quiz.QuizGameMain" />

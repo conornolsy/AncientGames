@@ -1,34 +1,26 @@
-package conor.nolan.ancientgames.SetUp;
+package conor.nolan.ancientgames.quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.ArrayList;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 import conor.nolan.ancientgames.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class QuizSelectMode extends AppCompatActivity {
 
-    public EditText username, password;
+    private Context context;
     private ArrayList<ImageView> images = new ArrayList<>();
-    private ImageView display;
     private ImageView background1;
     private ImageView background2;
     private ImageView background3;
@@ -36,17 +28,34 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView background5;
     private ImageView background4;
     private ImageView background7;
+    private TextView txt;
     private String msg;
     private int i =0;
     private Handler handler;
+    private ImageView display;
     private Animation animFadeIn,animFadeOut;
+    private Button learn;
+    private Button comp;
+
+    public QuizSelectMode(Context context) {
+        this.context = context;
+    }
+
+    public QuizSelectMode()
+    {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_quiz_select_mode);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
+        txt = (TextView) findViewById(R.id.textViewQ);
+        comp = (Button) findViewById(R.id.compModeButton);
+        learn = (Button) findViewById(R.id.learnModeButton);
+        comp.setVisibility(View.VISIBLE);
+        learn.setVisibility(View.VISIBLE);
         background1 = (ImageView) findViewById(R.id.background_sulla);
         background1.setVisibility(View.VISIBLE);
         background2 = (ImageView) findViewById(R.id.background_hannibal);
@@ -71,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         go();
     }
 
-
-
     private void go() {
 
         handler = new Handler();
@@ -83,8 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 int sleep =0;
                 while(true) {
                     try {
-                        username.bringToFront();
-                        password.bringToFront();
+                        txt.bringToFront();
                         Thread.sleep(sleep);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -135,13 +141,14 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void onLogin(View view)
-    {
-        String userN = username.getText().toString();
-        String passW = password.getText().toString();
-        String type = "login";
-        BackgroundRunner backgroundRunner = new BackgroundRunner(this);
-        backgroundRunner.execute(type,userN,passW);
+
+    public void compQuizClicked(View view) {
+        QuizSetUp quiz = new QuizSetUp(this,0);
+
+    }
+
+    public void learnQuizClicked(View view) {
+        QuizSetUp quiz = new QuizSetUp(this,1);
+
     }
 }
-

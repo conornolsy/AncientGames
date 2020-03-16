@@ -4,86 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".quiz.QuizSelectMode">
 
 
-    <TextView
-        android:id="@+id/textViewQ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/app_title"
-        android:fontFamily="@font/requiem"
-        app:layout_constraintBottom_toTopOf="@+id/button1"
+    <Button
+        android:id="@+id/learnModeButton"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:background="@drawable/bg1"
+        android:fontFamily="@font/vtks_blank"
+        android:onClick="learnQuizClicked"
+        android:text="@string/learning_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/compModeButton" />
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="100dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:id="@+id/compModeButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:background="@drawable/bg1"
         android:fontFamily="@font/vtks_blank"
-        android:onClick="readingClick"
-        android:text="@string/reading_button"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:onClick="compQuizClicked"
+        android:text="@string/competitive_mode"
+        app:layout_constraintBottom_toTopOf="@+id/learnModeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewQ" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="100dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/bg1"
-        android:fontFamily="@font/vtks_blank"
-        android:onClick="quizClicked"
-        android:text="@string/quizzes_button"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+    <TextView
+        android:id="@+id/textViewQ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/requiem"
+        android:text="@string/quizzes"
+        app:layout_constraintBottom_toTopOf="@+id/compModeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="100dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/bg1"
-        android:fontFamily="@font/vtks_blank"
-        android:onClick="onThisDayClicked"
-        android:text="@string/onthisday_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <ImageView
-    android:id="@+id/background_sulla"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:adjustViewBounds="true"
-    android:scaleType="centerCrop"
-    android:src="@drawable/sulla"/>
+        android:id="@+id/background_sulla"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sulla"/>
 
     <ImageView
         android:id="@+id/background_hannibal"
@@ -132,5 +103,8 @@
         android:src="@drawable/alexander"
         tools:layout_editor_absoluteX="50dp"
         tools:layout_editor_absoluteY="50dp" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

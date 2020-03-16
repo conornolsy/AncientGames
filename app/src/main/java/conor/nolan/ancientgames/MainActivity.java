@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import conor.nolan.ancientgames.onthisday.OnThisDay;
-import conor.nolan.ancientgames.quiz.QuizSetUp;
+import conor.nolan.ancientgames.quiz.QuizSelectMode;
 import conor.nolan.ancientgames.reading.readingHome;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         background6.setVisibility(View.INVISIBLE);
         background7 = (ImageView) findViewById(R.id.background_thucydides);
         background7.setVisibility(View.INVISIBLE);
-        textView = (TextView) findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textViewQ);
         textView.setVisibility(View.VISIBLE);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(20);
@@ -130,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void quizClicked(View view) {
-        QuizSetUp quiz = new QuizSetUp(this);
+        Intent intent = new Intent(this, QuizSelectMode.class);
+        startActivity(intent);
 
     }
 
