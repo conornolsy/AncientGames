@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import conor.nolan.ancientgames.onthisday.OnThisDay;
 import conor.nolan.ancientgames.quiz.QuizSelectMode;
 import conor.nolan.ancientgames.reading.readingHome;
 
@@ -140,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onThisDayClicked(View view) {
-      //  Intent intent = new Intent(this, OnThisDay.class);
-      //  startActivity(intent);
+       Intent intent = new Intent(this, OnThisDay.class);
+        startActivity(intent);
     }
 
 

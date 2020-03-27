@@ -3,11 +3,6 @@ package conor.nolan.ancientgames.quiz;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,10 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
-
-import conor.nolan.ancientgames.MainActivity;
-import conor.nolan.ancientgames.R;
 
 public class QuizBackgroundRunner extends AsyncTask<ArrayList,String,String> {
 
@@ -32,11 +23,13 @@ public class QuizBackgroundRunner extends AsyncTask<ArrayList,String,String> {
     private String[] splitString;
     private ArrayList<Question> questionsArrayList;
     private String q_number;
+    private int mode;
 
-    public QuizBackgroundRunner(Context context)
+    public QuizBackgroundRunner(Context context, int mode)
     {
         questionsArrayList = new ArrayList<Question>();
         this.context = context;
+        this.mode = mode;
     }
 
 
@@ -71,8 +64,10 @@ public class QuizBackgroundRunner extends AsyncTask<ArrayList,String,String> {
                     inputStream.close();
                     httpURLConnection.disconnect();
                     splitString = result.split("#");
-                    Question question = new Question(splitString[0], splitString[1], splitString[2], splitString[3], splitString[4], splitString[5]);
-                    questionsArrayList.add(question);
+                    if(splitString.length==6) {
+                        Question question = new Question(splitString[0], splitString[1], splitString[2], splitString[3], splitString[4], splitString[5]);
+                        questionsArrayList.add(question);
+                    }
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -87,9 +82,17 @@ public class QuizBackgroundRunner extends AsyncTask<ArrayList,String,String> {
 
     @Override
     protected void onPostExecute(String result) {
-        context.startActivity(
-                new Intent(context, QuizGame.class).putParcelableArrayListExtra("questionsArr", getQuestion())
-        );
+        if(mode==0) {
+            context.startActivity(
+                    new Intent(context, QuizGame.class).putParcelableArrayListExtra("questionsArr", getQuestion())
+            );
+        }
+
+        else{
+            context.startActivity(
+                    new Intent(context, QuizGameLearnMode.class).putParcelableArrayListExtra("questionsArr", getQuestion())
+            );
+        }
     }
 
 

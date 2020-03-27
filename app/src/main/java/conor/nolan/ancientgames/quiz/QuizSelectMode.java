@@ -12,7 +12,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import conor.nolan.ancientgames.R;
@@ -52,6 +51,8 @@ public class QuizSelectMode extends AppCompatActivity {
         setContentView(R.layout.activity_quiz_select_mode);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         txt = (TextView) findViewById(R.id.textViewQ);
+        txt.setTextColor(Color.WHITE);
+        txt.setTextSize(20);
         comp = (Button) findViewById(R.id.compModeButton);
         learn = (Button) findViewById(R.id.learnModeButton);
         comp.setVisibility(View.VISIBLE);

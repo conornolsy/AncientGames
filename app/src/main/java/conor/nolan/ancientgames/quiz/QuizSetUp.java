@@ -3,24 +3,17 @@ package conor.nolan.ancientgames.quiz;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.InputType;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class QuizSetUp {
@@ -49,7 +42,7 @@ public class QuizSetUp {
     public void setUpCompQuiz()
     {
 
-    while(usedQuestions.size()<= 2) {
+    while(usedQuestions.size()<= 10) {
         q_number = getRandom();
         if (!usedQuestions.contains(q_number)) {
             usedQuestions.add(q_number);
@@ -57,8 +50,7 @@ public class QuizSetUp {
 
     }
 
-        //String q_no = String.valueOf(q_number);
-        QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context);
+        QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context,0);
         quizBackgroundRunner.execute(usedQuestions);
 
 
@@ -76,7 +68,7 @@ public class QuizSetUp {
 
     public int getRandom()
     {
-        double x = (Math.random() * ((4 - 1) + 1)) + 1;
+        double x = (Math.random() * ((12 - 1) + 1)) + 1;
         int y = (int)x;
         return y;
     }
@@ -152,7 +144,7 @@ public class QuizSetUp {
                     numberOfQuestions = input.getText().toString();
                     if(Integer.parseInt(numberOfQuestions) <= Integer.parseInt(result))
                     {
-                        while(usedQuestions.size()<= Integer.parseInt(numberOfQuestions) ) {
+                        while(usedQuestions.size()<= Integer.parseInt(numberOfQuestions)-1 ) {
                             q_number = getRandom();
                             if (!usedQuestions.contains(q_number)) {
                                 usedQuestions.add(q_number);
@@ -160,7 +152,7 @@ public class QuizSetUp {
 
                         }
 
-                        QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context);
+                        QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context,1);
                         quizBackgroundRunner.execute(usedQuestions);
                     }
                 }

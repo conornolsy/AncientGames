@@ -33,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     private int i =0;
     private Handler handler;
     private Animation animFadeIn,animFadeOut;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,8 +127,6 @@ public class SignInActivity extends AppCompatActivity {
             }
         }).start();
     }
-
-
 
 
 

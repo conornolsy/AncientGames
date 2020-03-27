@@ -1,3 +1,2 @@
-include ':app', ':CommonLibrary'
+include ':app'
 rootProject.name='AncientGames'
-include ':AncientGamesIOS'

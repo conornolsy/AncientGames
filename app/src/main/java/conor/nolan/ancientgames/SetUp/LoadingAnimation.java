@@ -8,7 +8,6 @@ import android.os.Handler;
 
 import conor.nolan.ancientgames.MainActivity;
 import conor.nolan.ancientgames.R;
-import conor.nolan.ancientgames.onthisday.OnThisDay;
 
 public class LoadingAnimation extends AppCompatActivity {
     private String username;
@@ -23,28 +22,28 @@ public class LoadingAnimation extends AppCompatActivity {
 
             SharedPreferences pref = this.getSharedPreferences("UserData", 0); // 0 - for private mode
 
-            if((pref.getString("username", null) !=null && (pref.getString("password", null)!= null)))
+
+            if((!pref.contains("username") || (!pref.contains("password"))))
             {
-                username = pref.getString("username", null);
-                password = pref.getString("password", null);
-                System.out.println("Stored Username    "+username);
-                System.out.println("Stored Password    "+password);
-                BackgroundRunner backgroundRunner = new BackgroundRunner(this);
-                backgroundRunner.execute("auto_login",username,password);
-            }
-
-            else
-                {
-
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(LoadingAnimation.this, SignInActivity.class);
+                        Intent intent = new Intent(LoadingAnimation.this, MainActivity.class);
                         startActivity(intent);
                         finish();
                     }
                 }, 3000);
+            }
+
+            else
+                {
+                    username = pref.getString("username", null);
+                    password = pref.getString("password", null);
+                    System.out.println("Stored Username    "+username);
+                    System.out.println("Stored Password    "+password);
+                    BackgroundRunner backgroundRunner = new BackgroundRunner(this);
+                    backgroundRunner.execute("auto_login",username,password);
 
             }
         }

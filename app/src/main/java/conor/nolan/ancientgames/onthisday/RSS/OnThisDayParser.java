@@ -1,33 +1,30 @@
 package conor.nolan.ancientgames.onthisday.RSS;
 
 import android.util.Xml;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StackOverflowXmlParser {
+public class OnThisDayParser {
 
     private static final String ns = null;
 
-    public List parse(InputStream in) throws XmlPullParserException, IOException {
+    public List parseXML(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in, null);
             parser.nextTag();
-            return readFeed(parser);
+            return readFullRSSFeed(parser);
         } finally {
             in.close();
         }
     }
 
-    private List readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        List entries = new ArrayList();
+    private List readFullRSSFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
 
         parser.require(XmlPullParser.START_TAG, ns, "rss");
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -35,25 +32,38 @@ public class StackOverflowXmlParser {
                 continue;
             }
             String name = parser.getName();
-
+            System.out.println(name);
             if (name.equals("channel")) {
-                parser.next();
-            }
-
-
-
-            // Starts by looking for the entry tag
-            if (name.equals("item")) {
-                entries.add(readEntry(parser));
+                return readChannelFeed(parser);
             } else {
-                skip(parser);
+                skipper(parser);
+            }
+        }
+        return null;
+    }
+
+    private List readChannelFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+        List entries = new ArrayList();
+
+        parser.require(XmlPullParser.START_TAG, ns, "channel");
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            // Starts by looking for the entry tag
+            System.out.println(name);
+            if (name.equals("item")) {
+                entries.add(readItem(parser));
+            } else {
+                skipper(parser);
             }
         }
         return entries;
     }
 
 
-    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private void skipper(XmlPullParser parser) throws XmlPullParserException, IOException {
         if (parser.getEventType() != XmlPullParser.START_TAG) {
             throw new IllegalStateException();
         }
@@ -70,7 +80,7 @@ public class StackOverflowXmlParser {
         }
     }
 
-    private Entry readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private OTDItem readItem(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "item");
         String title = null;
         String summary = null;
@@ -87,10 +97,10 @@ public class StackOverflowXmlParser {
             } else if (name.equals("link")) {
                 link = readLink(parser);
             } else {
-                skip(parser);
+                skipper(parser);
             }
         }
-        return new Entry(title, summary, link);
+        return new OTDItem(title, summary, link);
     }
 
     // Processes title tags in the feed.
@@ -103,16 +113,8 @@ public class StackOverflowXmlParser {
 
     // Processes link tags in the feed.
     private String readLink(XmlPullParser parser) throws IOException, XmlPullParserException {
-        String link = "";
         parser.require(XmlPullParser.START_TAG, ns, "link");
-        String tag = parser.getName();
-        String relType = parser.getAttributeValue(null, "rel");
-        if (tag.equals("link")) {
-
-                link = parser.getAttributeValue(null, "href");
-                parser.nextTag();
-
-        }
+        String link = readText(parser);
         parser.require(XmlPullParser.END_TAG, ns, "link");
         return link;
     }
@@ -133,5 +135,4 @@ public class StackOverflowXmlParser {
         }
         return result;
     }
-
 }

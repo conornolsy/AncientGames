@@ -10,23 +10,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.ArrayList;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 import conor.nolan.ancientgames.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public EditText username, password;
+    private EditText username, password;
     private ArrayList<ImageView> images = new ArrayList<>();
     private ImageView display;
     private ImageView background1;
@@ -40,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private int i =0;
     private Handler handler;
     private Animation animFadeIn,animFadeOut;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

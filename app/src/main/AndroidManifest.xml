@@ -12,19 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_caeser"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".quiz.QuizSelectMode"></activity>
+        <activity android:name=".onthisday.OTD"></activity>
+        <activity android:name=".quiz.QuizGameLearnMode" />
+        <activity android:name=".quiz.QuizSelectMode" />
         <activity
             android:name=".quiz.QuizResults"
             android:label="@string/title_activity_quiz_results"
             android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
-        <activity android:name=".quiz.QResults" />
         <activity android:name=".quiz.QuizGame" />
-        <activity android:name=".quiz.QuizGameMain" />
         <activity android:name=".onthisday.OnThisDay" />
         <activity android:name=".SetUp.SignInActivity" />
         <activity android:name=".SetUp.Registration" />
         <activity android:name=".SetUp.LoginActivity" />
-        <activity android:name=".quiz.quizHome" />
         <activity android:name=".reading.readingHome" />
         <activity android:name=".MainActivity" />
         <activity

@@ -7,19 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.common.util.Hex;
-
-import conor.nolan.ancientgames.R;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,18 +33,14 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-
 import conor.nolan.ancientgames.MainActivity;
-import conor.nolan.ancientgames.User;
 
 public class BackgroundRunner extends AsyncTask<String,Void,String> {
 
-    Context context;
-    AlertDialog alertDialog;
+    private Context context;
+    private AlertDialog alertDialog;
     private boolean acceptedEmail;
     private boolean acceptedPassword;
     private Pattern pattern;
@@ -69,6 +60,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
     private String usernameOK="";
     private String emailOK="";
     private String password1 ="";
+    private boolean isAutoLogin=false;
 
     public BackgroundRunner(Context con)
     {
@@ -95,6 +87,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
 
         if(type.equals("auto_login"))
         {
+            isAutoLogin =true;
 
             try {
                 URL url = new URL(login_url);
@@ -179,6 +172,8 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             }
 
             byte[] s = Base64.getEncoder().encode(salt.getBytes());
+            String bytes = new String(s);
+            System.out.println(bytes);
             keySpec = new PBEKeySpec(password.toCharArray(), s, 65536, 512);
             try {
                 keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
@@ -341,8 +336,12 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             random = new SecureRandom();
             saltByte = new byte[16];
             random.nextBytes(saltByte);
+        //    String encoded = Base64.encodeToString(saltByte,Base64.DEFAULT);
+         //   byte[] s = Base64.encode(encoded.getBytes(),Base64.DEFAULT);
             String encoded = Base64.getEncoder().encodeToString(saltByte);
             byte[] s = Base64.getEncoder().encode(encoded.getBytes());
+            String bytes = new String(s);
+            System.out.println(bytes);
             salt = encoded;
             keySpec = new PBEKeySpec(password.toCharArray(), s, 65536, 512);
             try {
@@ -355,8 +354,9 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             } catch (InvalidKeySpecException e) {
                 e.printStackTrace();
             }
+            password1 = password;
             password = Hex.bytesToStringUppercase(hash);
-            password1=password;
+            System.out.println(password);
 
             if (acceptedEmail && acceptedPassword) {
 
@@ -444,6 +444,12 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             editor.putString("password", password1); // Storing integer
             editor.commit(); // commit changes
             context.startActivity(new Intent(context, MainActivity.class));
+        }
+
+
+        if(result.equals("Login Unsuccessful") && isAutoLogin==true)
+        {
+            context.startActivity(new Intent(context, SignInActivity.class));
         }
     }
 

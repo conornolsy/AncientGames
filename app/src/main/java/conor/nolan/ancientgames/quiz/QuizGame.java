@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -54,7 +53,7 @@ public class QuizGame extends AppCompatActivity{
         optionB = (Button) findViewById(R.id.buttonB);
         optionC = (Button) findViewById(R.id.buttonC);
         optionD = (Button) findViewById(R.id.buttonD);
-        context = this;
+        context= this;
         handlerTimeUp = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message message) {
@@ -74,8 +73,8 @@ public class QuizGame extends AppCompatActivity{
             }
         };
 
-        Task task = new Task(this);
-        task.start();
+        QGCompetitiveThread cThread = new QGCompetitiveThread(this);
+        cThread.start();
 
     }
 
@@ -90,11 +89,11 @@ public class QuizGame extends AppCompatActivity{
         correctAnswer = questions.get(j).getCorrect_Answer();
     }
 
-private class Task extends Thread implements View.OnClickListener
+private class QGCompetitiveThread extends Thread implements View.OnClickListener
 {
     private QuizGame view;
 
-    public Task(QuizGame view)
+    public QGCompetitiveThread(QuizGame view)
     {
         this.view = view;
     }
@@ -137,14 +136,12 @@ private class Task extends Thread implements View.OnClickListener
 
         switch (v.getId()) {
             case R.id.buttonA:
-                if (correctAnswer.equals("B")) {
+                if (correctAnswer.equals("A")) {
                     points += (int)(System.currentTimeMillis()-startTime);
                     numCorrect++;
                     running = false;
                     break;
                 } else {
-                    alertDialog = new AlertDialog.Builder(context).create();
-                    alertDialog.setTitle("Incorrect! The correct answer is: " + optionA);
                     running = false;
                     break;
                 }
@@ -178,8 +175,6 @@ private class Task extends Thread implements View.OnClickListener
                     running = false;
                     break;
                 } else {
-                  //  alertDialog = new AlertDialog.Builder(context).create();
-                  //  alertDialog.setTitle("Incorrect! The correct answer is: " + optionD);
                     running = false;
                     break;
                 }

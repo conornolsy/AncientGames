@@ -1,13 +1,13 @@
 package conor.nolan.ancientgames.onthisday.RSS;
 
-public class Entry {
+public class OTDItem {
     public final String title;
     public final String link;
-    public final String summary;
+    public final String description;
 
-    public Entry(String title, String summary, String link) {
+    public OTDItem(String title, String summary, String link) {
         this.title = title;
-        this.summary = summary;
+        this.description = summary;
         this.link = link;
     }
 }

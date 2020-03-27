@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".quiz.QuizGameLearnMode">
+    <TextView
+        android:id="@+id/question_number"
+        android:layout_width="250dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/smudgestick"
+        android:gravity="center"
+        android:text="@string/question_no"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/question"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/points" />
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="331dp"
+        android:layout_height="140dp"
+        android:fontFamily="@font/smudgestick"
+        android:gravity="center"
+        android:text="@string/question"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/buttonA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question_number" />
+
+    <Button
+        android:id="@+id/buttonD"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonC" />
+
+    <Button
+        android:id="@+id/buttonB"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg1"
+        app:layout_constraintBottom_toTopOf="@+id/buttonC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonA" />
+
+    <Button
+        android:id="@+id/buttonC"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg1"
+        app:layout_constraintBottom_toTopOf="@+id/buttonD"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonB" />
+
+    <Button
+        android:id="@+id/buttonA"
+        android:layout_width="320dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg1"
+        app:layout_constraintBottom_toTopOf="@+id/buttonB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/question" />
+
+    <TextView
+        android:id="@+id/points"
+        android:layout_width="152dp"
+        android:layout_height="21dp"
+        android:fontFamily="@font/smudgestick"
+        android:gravity="center"
+        android:text="@string/points"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/question_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
