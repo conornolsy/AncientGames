@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".quiz.QuizGameLearnMode">
+    tools:context=".quiz.LearningMode.QuizGameLearnMode">
     <TextView
         android:id="@+id/question_number"
         android:layout_width="250dp"
@@ -21,8 +21,8 @@
 
     <TextView
         android:id="@+id/question"
-        android:layout_width="331dp"
-        android:layout_height="140dp"
+        android:layout_width="250dp"
+        android:layout_height="58dp"
         android:fontFamily="@font/smudgestick"
         android:gravity="center"
         android:text="@string/question"
@@ -36,7 +36,7 @@
     <Button
         android:id="@+id/buttonD"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
     <Button
         android:id="@+id/buttonB"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toTopOf="@+id/buttonC"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +58,7 @@
     <Button
         android:id="@+id/buttonC"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toTopOf="@+id/buttonD"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,7 @@
     <Button
         android:id="@+id/buttonA"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toTopOf="@+id/buttonB"
         app:layout_constraintEnd_toEndOf="parent"

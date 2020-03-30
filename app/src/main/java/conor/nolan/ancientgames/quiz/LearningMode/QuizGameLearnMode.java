@@ -1,4 +1,4 @@
-package conor.nolan.ancientgames.quiz;
+package conor.nolan.ancientgames.quiz.LearningMode;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
@@ -14,9 +14,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 import conor.nolan.ancientgames.R;
+import conor.nolan.ancientgames.quiz.Question;
+import conor.nolan.ancientgames.quiz.QuizResults;
 
 public class QuizGameLearnMode extends AppCompatActivity {
     private ArrayList<Question> questions;
+    private ArrayList<Facts> facts;
     private TextView questionNo;
     private TextView question;
     private Button optionA;
@@ -30,10 +33,11 @@ public class QuizGameLearnMode extends AppCompatActivity {
     private TextView pointsView;
     private long startTime;
     private boolean running = true;
-    private Handler handlerTimeUp;
+    private Handler delay;
     private Handler handlerGetResults;
     private int numCorrect=0;
     private int qNo;
+    private boolean answerCorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class QuizGameLearnMode extends AppCompatActivity {
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         questions = new ArrayList<Question>();
         questions = getIntent().getParcelableArrayListExtra("questionsArr");
+        facts = getIntent().getParcelableArrayListExtra("factsArr");
         pointsView = (TextView) findViewById(R.id.points);
         pointsView.setText("");
         questionNo = (TextView) findViewById(R.id.question_number);
@@ -54,6 +59,7 @@ public class QuizGameLearnMode extends AppCompatActivity {
         qNo=0;
         QGLearningThread qThread = new QGLearningThread(this);
         qThread.start();
+
         handlerGetResults = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message message) {
@@ -61,6 +67,7 @@ public class QuizGameLearnMode extends AppCompatActivity {
                 intent.putExtra("points", points);
                 intent.putExtra("numberCorrect",numCorrect);
                 startActivity(intent);
+                finish();
             }
         };
 
@@ -104,16 +111,52 @@ public class QuizGameLearnMode extends AppCompatActivity {
                 optionB.setOnClickListener(this);
                 optionC.setOnClickListener(this);
                 optionD.setOnClickListener(this);
+                final String fact = facts.get(i).getFact();
+                final String correctOption = questions.get(i).getCorrect_Answer();
+                final String answer;
+                if(correctOption.equals("A"))
+                    answer=questions.get(i).getOption_A();
+                else  if(correctOption.equals("B"))
+                    answer=questions.get(i).getOption_B();
+                else  if(correctOption.equals("C"))
+                    answer=questions.get(i).getOption_C();
+                else
+                    answer=questions.get(i).getOption_D();
+
 
                 while (running) {
 
 
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(answerCorrect) {
+                            alertDialog = new AlertDialog.Builder(context).create();
+                            alertDialog.setTitle("Correct!");
+                            alertDialog.setMessage("Did you Know: "+fact);
+                            alertDialog.show();
+                        }
+
+                        else {
+                            alertDialog = new AlertDialog.Builder(context).create();
+                            alertDialog.setTitle("Incorrect!");
+                            alertDialog.setMessage("Correct Answer: "+ answer+"\nDid you Know: "+fact);
+                            alertDialog.show();
+                        }
+                    }
+                });
 
             }
+            delay = new Handler(Looper.getMainLooper());
+            delay.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Message message = handlerGetResults.obtainMessage();
+                    message.sendToTarget();
+                }
+            }, 3000);
 
-            Message message = handlerGetResults.obtainMessage();
-            message.sendToTarget();
 
         }
 
@@ -125,21 +168,24 @@ public class QuizGameLearnMode extends AppCompatActivity {
                     if (correctAnswer.equals("A")) {
                         points += 1;
                         numCorrect++;
+                        answerCorrect=true;
                         running = false;
                         break;
                     } else {
-                        alertDialog = new AlertDialog.Builder(context).create();
-                        alertDialog.setTitle("Incorrect! The correct answer is: " + optionA);
+                        answerCorrect=false;
                         running = false;
                         break;
                     }
 
                 case R.id.buttonB:
                     if (correctAnswer.equals("B")) {
-                        points += 1; numCorrect++;
+                        points += 1;
+                        numCorrect++;
+                        answerCorrect=true;
                         running = false;
                         break;
                     } else {
+                        answerCorrect=false;
                         running = false;
                         break;
                     }
@@ -148,9 +194,11 @@ public class QuizGameLearnMode extends AppCompatActivity {
                     if (correctAnswer.equals("C")) {
                         points += 1;
                         numCorrect++;
+                        answerCorrect=true;
                         running = false;
                         break;
                     } else {
+                        answerCorrect=false;
                         running = false;
                         break;
                     }
@@ -159,9 +207,11 @@ public class QuizGameLearnMode extends AppCompatActivity {
                     if (correctAnswer.equals("D")) {
                         points += 1;
                         numCorrect++;
+                        answerCorrect=true;
                         running = false;
                         break;
                     } else {
+                        answerCorrect=false;
                         running = false;
                         break;
                     }

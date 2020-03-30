@@ -1,10 +1,12 @@
 package conor.nolan.ancientgames.SetUp;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.OnNmeaMessageListener;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
@@ -30,6 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,10 +64,20 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
     private String emailOK="";
     private String password1 ="";
     private boolean isAutoLogin=false;
+    public OnMessageListener mListener;
+
+    public BackgroundRunner()
+    {
+
+    }
+    public interface OnMessageListener {
+        void messageCallback(String message); // you can change the parameter here. depends on what you want.
+    }
 
     public BackgroundRunner(Context con)
     {
         context = con;
+        mListener = (OnMessageListener) context;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -83,7 +96,10 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
         String get_salt_url = "https://danu6.it.nuigalway.ie/ancientgames/fetchSalt.php";
         String checkUsername = "https://danu6.it.nuigalway.ie/ancientgames/checkUsername.php";
         String checkEmail = "https://danu6.it.nuigalway.ie/ancientgames/checkEmail.php";
-        // Login
+
+
+
+        //Auto Login if user details saved in cache
 
         if(type.equals("auto_login"))
         {
@@ -133,62 +149,22 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             }
         }
 
+
+        // Manual Login
+
         if(type.equals("login"))
         {
 
-            try {
-                URL url = new URL(get_salt_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8");
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-
-
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
-                String line;
-                while ((line = bufferedReader.readLine())!=null)
-                {
-                    salt += line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-            }
-            catch (MalformedURLException e)
+           salt = getSalt(get_salt_url,username);
+           if(salt==null)
             {
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
+                return null;
             }
 
-            byte[] s = Base64.getEncoder().encode(salt.getBytes());
-            String bytes = new String(s);
-            System.out.println(bytes);
-            keySpec = new PBEKeySpec(password.toCharArray(), s, 65536, 512);
-            try {
-                keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            try {
-                hash = keyFactory.generateSecret(keySpec).getEncoded();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            }
-            password = Hex.bytesToStringUppercase(hash);
-            password1=password;
+           password1 = getHash(password,salt);
 
-            System.out.println(password + "                                     HERE LOGIN !!!\n\n\n\n\n");
+
+
 
             try {
                 URL url = new URL(login_url);
@@ -199,7 +175,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8")
-                        +"&"+URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                        +"&"+URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password1,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -234,10 +210,17 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             }
         }
 
+
+
+        //Registration for non-existing users
+
         else if(type.equals("register")) {
 
             String email = params[3];
             String confirmPassword = params[4];
+
+
+            //check user inputted passwords match
 
             if(!password.equals(confirmPassword))
             {
@@ -245,118 +228,32 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
                 return result;
             }
 
-
-            //check username not already taken
-
-            try {
-                URL url = new URL(checkUsername);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8");
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-
-
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
-                String line;
-                while ((line = bufferedReader.readLine())!=null)
-                {
-                     usernameOK+= line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-            }
-            catch (MalformedURLException e)
-            {
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-           // System.out.println(usernameOK+ "  Message");
-
-            if(usernameOK.equals("Sorry username already taken!")){
-                return usernameOK;}
-
-
-            try {
-                URL url = new URL(checkEmail);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8");
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-
-
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
-                String line;
-                while ((line = bufferedReader.readLine())!=null)
-                {
-                    emailOK+= line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-            }
-            catch (MalformedURLException e)
-            {
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-
-            System.out.println(emailOK+ "  Message");
-
-             if(emailOK.equals("Sorry email already taken!")){
-                return emailOK;}
-
-
+            //check email and password match an acceptable format
 
             pattern = Pattern.compile(PASSWORD_PATTERN);
             acceptedEmail = isValidEmail(email);
             acceptedPassword = isValidPassword(password);
+
+            //check username not already taken
+
+            usernameOK = checkUsername(username,checkUsername);
+            if(usernameOK.equals("Sorry username already taken!")){
+                return usernameOK;}
+
+
+
+          //check email already taken
+           emailOK = checkEmail(checkEmail, email);
+            if(emailOK.equals("Sorry email already taken!")){
+                return emailOK;}
+
+
             random = new SecureRandom();
             saltByte = new byte[16];
             random.nextBytes(saltByte);
-        //    String encoded = Base64.encodeToString(saltByte,Base64.DEFAULT);
-         //   byte[] s = Base64.encode(encoded.getBytes(),Base64.DEFAULT);
             String encoded = Base64.getEncoder().encodeToString(saltByte);
-            byte[] s = Base64.getEncoder().encode(encoded.getBytes());
-            String bytes = new String(s);
-            System.out.println(bytes);
             salt = encoded;
-            keySpec = new PBEKeySpec(password.toCharArray(), s, 65536, 512);
-            try {
-                keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-            try {
-                hash = keyFactory.generateSecret(keySpec).getEncoded();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            }
-            password1 = password;
-            password = Hex.bytesToStringUppercase(hash);
-            System.out.println(password);
+            password1=  getHash(password,salt);
 
             if (acceptedEmail && acceptedPassword) {
 
@@ -372,7 +269,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
                     BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                     String post_data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8")
                             + "&" + URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8")
-                            + "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8")
+                            + "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password1, "UTF-8")
                             + "&" + URLEncoder.encode("salt", "UTF-8") + "=" + URLEncoder.encode(salt, "UTF-8");
 
                     bufferedWriter.write(post_data);
@@ -414,7 +311,6 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             else{
                 String result= "Error logging in \n Please try again.";
                 return result;
-
             }
 
         }
@@ -432,11 +328,23 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result) {
-        // super.onPostExecute(aVoid);
-        alertDialog.setMessage(result);
-        alertDialog.show();
-        if(result.equals("Registration Successful") || result.equals("Login Successful"))
+
+        if(result==null && isAutoLogin==true)
         {
+            context.startActivity(new Intent(context, SignInActivity.class));
+            mListener.messageCallback("AutoLogin unsuccessful");
+        }
+
+       else if(result==null)
+        {
+            alertDialog.setMessage("Error connecting to server, check your internet connection!");
+            alertDialog.show();
+        }
+
+        else if(result.equals("Registration Successful") || result.equals("Login Successful"))
+        {
+            alertDialog.setMessage(result);
+            alertDialog.show();
             SharedPreferences pref = context.getSharedPreferences("UserData", 0); // 0 - for private mode
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("username", userN); // Storing string
@@ -444,13 +352,16 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             editor.putString("password", password1); // Storing integer
             editor.commit(); // commit changes
             context.startActivity(new Intent(context, MainActivity.class));
+            mListener.messageCallback("Sign In activity successful");
         }
 
 
-        if(result.equals("Login Unsuccessful") && isAutoLogin==true)
+        else if(result.equals("Login Unsuccessful") && isAutoLogin==true)
         {
             context.startActivity(new Intent(context, SignInActivity.class));
+            mListener.messageCallback("AutoLogin unsuccessful");
         }
+
     }
 
     @Override
@@ -458,8 +369,9 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
         super.onProgressUpdate(values);
     }
 
-    public static boolean isValidEmail(CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    public boolean isValidEmail(CharSequence target) {
+        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+        return true;
     }
 
     public boolean isValidPassword(String password)
@@ -468,5 +380,151 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
         return matcher.matches();
     }
 
+    public String getSalt(String get_salt_url, String username)
+    {
+        try {
+            URL url = new URL(get_salt_url);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+
+
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
+            String line;
+            while ((line = bufferedReader.readLine())!=null)
+            {
+                salt += line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+            return salt;
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getHash(String password, String salt)
+    {
+        byte[] s = Base64.getEncoder().encode(salt.getBytes());
+        String bytes = new String(s);
+        System.out.println(bytes);
+        keySpec = new PBEKeySpec(password.toCharArray(), s, 65536, 512);
+        try {
+            keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        try {
+            hash = keyFactory.generateSecret(keySpec).getEncoded();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        password = Hex.bytesToStringUppercase(hash);
+        return password;
+    }
+
+
+    public String checkUsername(String username, String checkUsername)
+    {
+        String response="";
+        try {
+            URL url = new URL(checkUsername);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("username","UTF-8")+"="+URLEncoder.encode(username,"UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+
+
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
+            String line;
+            while ((line = bufferedReader.readLine())!=null)
+            {
+                response+= line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        // System.out.println(usernameOK+ "  Message");
+
+
+            return response;
+    }
+
+
+    public String checkEmail(String emailUrl, String email)
+    {
+        String response="";
+        try {
+            URL url = new URL(emailUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+
+
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
+            String line;
+            while ((line = bufferedReader.readLine())!=null)
+            {
+                response+= line;
+            }
+            bufferedReader.close();
+            inputStream.close();
+            httpURLConnection.disconnect();
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
 
 }

@@ -2,20 +2,25 @@ package conor.nolan.ancientgames.SetUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import java.util.ArrayList;
 
 import conor.nolan.ancientgames.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements BackgroundRunner.OnMessageListener {
 
+    private BroadcastReceiver mLoginBroadcastReceiver;
     private EditText username, password;
     private ArrayList<ImageView> images = new ArrayList<>();
     private ImageView display;
@@ -30,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private int i =0;
     private Handler handler;
     private Animation animFadeIn,animFadeOut;
+    private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         images.add(background5);
         images.add(background6);
         images.add(background7);
+        context =this;
         go();
     }
 
@@ -131,8 +139,21 @@ public class LoginActivity extends AppCompatActivity {
         String userN = username.getText().toString();
         String passW = password.getText().toString();
         String type = "login";
-        BackgroundRunner backgroundRunner = new BackgroundRunner(this);
-        backgroundRunner.execute(type,userN,passW);
+       // BackgroundRunner backgroundRunner = new BackgroundRunner(this);
+     //   backgroundRunner.execute(type,userN,passW);
+       MessageController login= new MessageController(context);
+       login.login(type, userN,passW);
     }
+
+
+    @Override
+    public void messageCallback(String response) {
+        Log.i("MainActivity", "Response: " + response);
+        System.out.println("Repsonse:    !!!   :   "+response);
+        finish();
+    }
+
+
+
 }
 

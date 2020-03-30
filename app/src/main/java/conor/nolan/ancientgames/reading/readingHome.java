@@ -51,10 +51,24 @@ public class readingHome extends AppCompatActivity {
 
 
         StringBuilder htmlString = new StringBuilder();
-        htmlString.append("<body style=\"background-color:rgba(0,0,0,.01); color: white;\"><style>\n" +
+        htmlString.append("" +
+                "<body style=\"background-color:rgba(0,0,0,.01); " +
+                "color: white;\">" +
+                "<style>\n" +
                 "table, th, td {\n" +
                 "  border: 1px solid white;\n" +
                 "}\n" +
+                "a:link {\n" +
+                        "  color: green;\n" +
+                        "  background-color: transparent;\n" +
+                        "  text-decoration: none;\n" +
+                        "}\n" +
+                        "a:visited {\n" +
+                        "  color: pink;\n" +
+                        "  background-color: transparent;\n" +
+                        "  text-decoration: none;\n" +
+                        "}\n" +
+
                 "</style>Featured Articles<br>");
 
 
@@ -121,8 +135,8 @@ public class readingHome extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             WebView featuredArticlesLinks = (WebView) findViewById(R.id.webView2);
-            featuredArticlesLinks.setBackgroundResource(R.drawable.webviewbackg);
             featuredArticlesLinks.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            featuredArticlesLinks.setBackgroundResource(R.drawable.webviewbg );
             featuredArticlesLinks.loadData(result, "text/html", null);
         }
     }

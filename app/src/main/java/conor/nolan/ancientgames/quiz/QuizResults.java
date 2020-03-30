@@ -38,7 +38,7 @@ public class QuizResults extends AppCompatActivity {
         numberCorrect = getIntent().getIntExtra("numberCorrect",0);
         results = (TextView) findViewById(R.id.q_result);
         results.append("Total Points: "+points+"\n");
-        results.append(numberCorrect+" out of 10 questions answered correctly\n\n");
+        results.append(numberCorrect+" out of "+questions.size()+ " questions answered correctly\n\n");
         int i =1;
         for(Question question: questions)
         {

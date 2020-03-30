@@ -2,6 +2,7 @@ package conor.nolan.ancientgames.onthisday;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -47,9 +48,21 @@ public class OnThisDay extends AppCompatActivity {
 
 
         StringBuilder htmlString = new StringBuilder();
-        htmlString.append("<body style=\"background-color:rgba(0,0,0,.01); color: white;\"><style>\n" +
+        htmlString.append("<body style=\"background-color:rgba(0,0,0,.01);" +
+                " color: white;\">" +
+                "<style>\n" +
                 "table, th, td {\n" +
                 "  border: 1px solid white;\n" +
+                "}\n" +
+                "a:link {\n" +
+                "  color: green;\n" +
+                "  background-color: transparent;\n" +
+                "  text-decoration: none;\n" +
+                "}\n" +
+                "a:visited {\n" +
+                "  color: pink;\n" +
+                "  background-color: transparent;\n" +
+                "  text-decoration: none;\n" +
                 "}\n" +
                 "</style>On This Day in History <br>");
 
@@ -117,8 +130,8 @@ public class OnThisDay extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             WebView onThisDayLinks = (WebView) findViewById(R.id.webView1);
-            onThisDayLinks.setBackgroundResource(R.drawable.webviewbackg);
-            onThisDayLinks.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            onThisDayLinks.setBackgroundColor(Color.TRANSPARENT);
+            onThisDayLinks.setBackgroundResource(R.drawable.webviewbg);
             onThisDayLinks.loadData(result, "text/html", null);
         }
     }

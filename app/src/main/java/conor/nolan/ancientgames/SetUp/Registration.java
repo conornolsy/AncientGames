@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 import conor.nolan.ancientgames.R;
 
-public class Registration extends AppCompatActivity {
+public class Registration extends AppCompatActivity  implements BackgroundRunner.OnMessageListener {
 
     private EditText email, username, password, confrimPassword;
     private ImageView background;
@@ -148,4 +149,10 @@ public class Registration extends AppCompatActivity {
 
     }
 
+    @Override
+    public void messageCallback(String response) {
+        Log.i("MainActivity", "Response: " + response);
+        System.out.println("Repsonse:    !!!   :   "+response);
+        finish();
+    }
 }

@@ -130,13 +130,10 @@ public class QuizSetUp {
             builder.setTitle("No. of Available questions: "+ result);
             builder.setMessage("Enter Number of Questions you'd like to be tested on between 1 and "+result);
 
-// Set up the input
             final EditText input = new EditText(context);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
 
-// Set up the buttons
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -151,6 +148,11 @@ public class QuizSetUp {
                             }
 
                         }
+
+                        alertDialog = new AlertDialog.Builder(context).create();
+                        alertDialog.setTitle("Loading");
+                        alertDialog.setMessage("Fetching Questions...");
+                        alertDialog.show();
 
                         QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context,1);
                         quizBackgroundRunner.execute(usedQuestions);

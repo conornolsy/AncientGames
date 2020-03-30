@@ -1,4 +1,4 @@
-package conor.nolan.ancientgames.quiz;
+package conor.nolan.ancientgames.quiz.CompetitiveMode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.ArrayList;
 import conor.nolan.ancientgames.R;
+import conor.nolan.ancientgames.quiz.Question;
+import conor.nolan.ancientgames.quiz.QuizResults;
 
 public class QuizGame extends AppCompatActivity{
     private ArrayList<Question> questions;
@@ -70,6 +72,7 @@ public class QuizGame extends AppCompatActivity{
                 intent.putExtra("points", points);
                 intent.putExtra("numberCorrect",numCorrect);
                 startActivity(intent);
+                finish();
             }
         };
 
