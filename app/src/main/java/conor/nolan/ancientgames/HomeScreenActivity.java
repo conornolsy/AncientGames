@@ -17,7 +17,7 @@ import conor.nolan.ancientgames.onthisday.OnThisDay;
 import conor.nolan.ancientgames.quiz.QuizSelectMode;
 import conor.nolan.ancientgames.reading.readingHome;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity {
     private ImageView background1;
     private ImageView background2;
     private ImageView background3;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home_screen);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         background1 = (ImageView) findViewById(R.id.background_sulla);
         background1.setVisibility(View.VISIBLE);
@@ -63,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
         images.add(background5);
         images.add(background6);
         images.add(background7);
-       go();
+        go();
 
     }
 
     private void go() {
 
-         handler = new Handler();
+        handler = new Handler();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if(i==images.size()-1) {i=0;}
                     else{ i++;}
-                   sleep=1500;
+                    sleep=1500;
                 }
             }
         }).start();
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onThisDayClicked(View view) {
-       Intent intent = new Intent(this, OnThisDay.class);
+        Intent intent = new Intent(this, OnThisDay.class);
         startActivity(intent);
     }
 

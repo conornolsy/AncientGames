@@ -8,6 +8,20 @@
 
 
     <Button
+        android:id="@+id/leaderboardButton"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg1"
+        android:fontFamily="@font/vtks_blank"
+        android:onClick="leaderboardClick"
+        android:text="@string/leaderboard_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/learnModeButton" />
+
+    <Button
         android:id="@+id/learnModeButton"
         android:layout_width="200dp"
         android:layout_height="55dp"
@@ -15,7 +29,7 @@
         android:fontFamily="@font/vtks_blank"
         android:onClick="learnQuizClicked"
         android:text="@string/learning_button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboardButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +60,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:id="@+id/background_sulla"
@@ -103,7 +116,6 @@
         android:src="@drawable/alexander"
         tools:layout_editor_absoluteX="50dp"
         tools:layout_editor_absoluteY="50dp" />
-
 
 
 

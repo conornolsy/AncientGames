@@ -38,7 +38,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import conor.nolan.ancientgames.MainActivity;
+
+import conor.nolan.ancientgames.HomeScreenActivity;
+//import conor.nolan.ancientgames.MainActivity;
 
 public class BackgroundRunner extends AsyncTask<String,Void,String> {
 
@@ -351,7 +353,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             editor.putInt("highScore", highScore); // Storing integer
             editor.putString("password", password1); // Storing integer
             editor.commit(); // commit changes
-            context.startActivity(new Intent(context, MainActivity.class));
+            context.startActivity(new Intent(context, HomeScreenActivity.class));
             mListener.messageCallback("Sign In activity successful");
         }
 

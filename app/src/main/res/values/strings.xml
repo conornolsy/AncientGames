@@ -22,5 +22,8 @@
     <string name="title_activity_quiz_results">QuizResults</string>
     <string name="competitive_mode">Competitive Mode</string>
     <string name="learning_button">Learning Mode</string>
+    <string name="title_activity_quiz_leaderboard">QuizLeaderboard</string>
+    <string name="leaderboard_button">Leaderboard</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

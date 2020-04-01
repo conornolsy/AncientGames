@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import conor.nolan.ancientgames.MainActivity;
 import conor.nolan.ancientgames.R;
 import conor.nolan.ancientgames.quiz.QuizSelectMode;
 

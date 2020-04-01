@@ -29,7 +29,7 @@ public class QuizGame extends AppCompatActivity{
     private String correctAnswer;
     private AlertDialog alertDialog;
     private Context context;
-    private int points = 0;
+    private int points;
     private TextView pointsView;
     private long startTime;
     private boolean running = true;
@@ -46,6 +46,7 @@ public class QuizGame extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_game);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+        points = 0;
         questions = new ArrayList<Question>();
         questions = getIntent().getParcelableArrayListExtra("questionsArr");
         pointsView = (TextView) findViewById(R.id.points);

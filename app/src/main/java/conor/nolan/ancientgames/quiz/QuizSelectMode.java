@@ -3,6 +3,7 @@ package conor.nolan.ancientgames.quiz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -150,6 +151,12 @@ public class QuizSelectMode extends AppCompatActivity {
 
     public void learnQuizClicked(View view) {
         QuizSetUp quiz = new QuizSetUp(this,1);
+
+    }
+
+    public void leaderboardClick(View view) {
+        Intent intent = new Intent(this, QuizLeaderboard.class);
+        startActivity(intent);
 
     }
 }

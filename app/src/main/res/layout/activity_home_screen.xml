@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
+    tools:context=".HomeScreenActivity">
 
     <TextView
         android:id="@+id/textViewQ"
@@ -78,12 +77,12 @@
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <ImageView
-    android:id="@+id/background_sulla"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:adjustViewBounds="true"
-    android:scaleType="centerCrop"
-    android:src="@drawable/sulla"/>
+        android:id="@+id/background_sulla"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sulla"/>
 
     <ImageView
         android:id="@+id/background_hannibal"

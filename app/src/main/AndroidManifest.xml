@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_caeser"
@@ -13,8 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_caeser"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <uses-library android:name="android.test.runner"
+        <activity android:name=".HomeScreenActivity"></activity>
+        <activity
+            android:name=".quiz.QuizLeaderboard"
+            android:label="@string/title_activity_quiz_leaderboard"
+            android:theme="@style/AppTheme.NoActionBar.NoActionBar" />
+
+        <uses-library
+            android:name="android.test.runner"
             android:required="false" />
+
         <activity android:name=".quiz.LearningMode.QuizGameLearnMode" />
         <activity android:name=".quiz.QuizSelectMode" />
         <activity
