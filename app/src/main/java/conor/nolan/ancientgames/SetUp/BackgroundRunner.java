@@ -1,19 +1,14 @@
 package conor.nolan.ancientgames.SetUp;
 
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.OnNmeaMessageListener;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Patterns;
-
 import androidx.annotation.RequiresApi;
-
 import com.google.android.gms.common.util.Hex;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -26,21 +21,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-
 import conor.nolan.ancientgames.HomeScreenActivity;
-//import conor.nolan.ancientgames.MainActivity;
+
 
 public class BackgroundRunner extends AsyncTask<String,Void,String> {
 
@@ -59,7 +51,6 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
     private SecretKeyFactory keyFactory;
     private byte[] saltByte;
     private String salt ="";
-    private MessageDigest md;
     private String msg;
     private byte[] hash;
     private String usernameOK="";
@@ -73,7 +64,7 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
 
     }
     public interface OnMessageListener {
-        void messageCallback(String message); // you can change the parameter here. depends on what you want.
+        void messageCallback(String message);
     }
 
     public BackgroundRunner(Context con)
@@ -314,15 +305,13 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
                 String result= "Error logging in \n Please try again.";
                 return result;
             }
-
         }
-
         return null;
     }
 
     @Override
     protected void onPreExecute() {
-        // super.onPreExecute();
+        //super.onPreExecute();
         alertDialog = new AlertDialog.Builder(context).create();
         alertDialog.setTitle("Login Status");
 
@@ -347,11 +336,11 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
         {
             alertDialog.setMessage(result);
             alertDialog.show();
-            SharedPreferences pref = context.getSharedPreferences("UserData", 0); // 0 - for private mode
+            SharedPreferences pref = context.getSharedPreferences("UserData", 0);
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("username", userN); // Storing string
             editor.putInt("highScore", highScore); // Storing integer
-            editor.putString("password", password1); // Storing integer
+            editor.putString("password", password1); // Storing string
             editor.commit(); // commit changes
             context.startActivity(new Intent(context, HomeScreenActivity.class));
             mListener.messageCallback("Sign In activity successful");
@@ -364,17 +353,19 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             mListener.messageCallback("AutoLogin unsuccessful");
         }
 
+        else{
+            alertDialog.setMessage(result);
+            alertDialog.show();
+            mListener.messageCallback("Login unsuccessful");
+        }
+
+
     }
 
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
-    public boolean isValidEmail(CharSequence target) {
-        if (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-        return true;
-    }
 
     public boolean isValidPassword(String password)
     {
@@ -460,8 +451,6 @@ public class BackgroundRunner extends AsyncTask<String,Void,String> {
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();
-
-
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
             String line;

@@ -1,6 +1,5 @@
 package conor.nolan.ancientgames.SetUp;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import conor.nolan.ancientgames.R;
-import conor.nolan.ancientgames.quiz.QuizSelectMode;
 
 public class LoadingAnimation extends AppCompatActivity implements BackgroundRunner.OnMessageListener {
     private String username;
@@ -23,10 +21,13 @@ public class LoadingAnimation extends AppCompatActivity implements BackgroundRun
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_loading_animation);
+            tryAutoLogin();
+        }
 
 
-            SharedPreferences pref = this.getSharedPreferences("UserData", 0); // 0 - for private mode
-
+        public void tryAutoLogin()
+        {
+            SharedPreferences pref = this.getSharedPreferences("UserData", 0);
 
             if((!pref.contains("username") || (!pref.contains("password"))))
             {
@@ -42,23 +43,19 @@ public class LoadingAnimation extends AppCompatActivity implements BackgroundRun
             }
 
             else
-                {
-                    username = pref.getString("username", null);
-                    password = pref.getString("password", null);
-                    MessageController autoLogin= new MessageController(this);
-                    autoLogin.login("auto_login",username,password);
-
+            {
+                username = pref.getString("username", null);
+                password = pref.getString("password", null);
+                MessageController autoLogin= new MessageController(this);
+                autoLogin.login("auto_login",username,password);
             }
         }
 
     @Override
     public void messageCallback(String response) {
             this.response = response;
+           // System.out.println(response);
 
     }
-     public String getMessage()
-     {
-         return response;
-     }
 }
 

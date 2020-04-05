@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
-
 import conor.nolan.ancientgames.R;
 
 public class QuizSelectMode extends AppCompatActivity {
@@ -36,6 +37,8 @@ public class QuizSelectMode extends AppCompatActivity {
     private Animation animFadeIn,animFadeOut;
     private Button learn;
     private Button comp;
+    private Button leaderBoard;
+    private Handler buttonClicked;
 
     public QuizSelectMode(Context context) {
         this.context = context;
@@ -56,8 +59,13 @@ public class QuizSelectMode extends AppCompatActivity {
         txt.setTextSize(20);
         comp = (Button) findViewById(R.id.compModeButton);
         learn = (Button) findViewById(R.id.learnModeButton);
+        leaderBoard = (Button) findViewById(R.id.leaderboardButton);
+        comp.setEnabled(true);
+        learn.setEnabled(true);
+        leaderBoard.setEnabled(true);
         comp.setVisibility(View.VISIBLE);
         learn.setVisibility(View.VISIBLE);
+        leaderBoard.setVisibility(View.VISIBLE);
         background1 = (ImageView) findViewById(R.id.background_sulla);
         background1.setVisibility(View.VISIBLE);
         background2 = (ImageView) findViewById(R.id.background_hannibal);
@@ -80,6 +88,14 @@ public class QuizSelectMode extends AppCompatActivity {
         images.add(background6);
         images.add(background7);
         go();
+        buttonClicked = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                comp.setEnabled(false);
+                learn.setEnabled(false);
+                leaderBoard.setEnabled(false);
+            }
+        };
     }
 
     private void go() {
@@ -157,6 +173,15 @@ public class QuizSelectMode extends AppCompatActivity {
     public void leaderboardClick(View view) {
         Intent intent = new Intent(this, QuizLeaderboard.class);
         startActivity(intent);
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        comp.setEnabled(true);
+        learn.setEnabled(true);
+        leaderBoard.setEnabled(true);
+    }
+
+
 }

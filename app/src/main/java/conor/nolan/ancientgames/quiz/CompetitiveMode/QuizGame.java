@@ -36,6 +36,8 @@ public class QuizGame extends AppCompatActivity{
     private Handler handlerTimeUp;
     private Handler handlerGetResults;
     private int numCorrect=0;
+    private int qNo;
+
 
     public QuizGame() {
 
@@ -57,6 +59,7 @@ public class QuizGame extends AppCompatActivity{
         optionC = (Button) findViewById(R.id.buttonC);
         optionD = (Button) findViewById(R.id.buttonD);
         context= this;
+        qNo=0;
         handlerTimeUp = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message message) {
@@ -84,7 +87,8 @@ public class QuizGame extends AppCompatActivity{
 
     public void startRound(int j) {
         pointsView.setText("Points: " + points);
-        questionNo.setText("Question " + j);
+        qNo++;
+        questionNo.setText("Question " + qNo);
         question.setText(questions.get(j).getQuestion());
         optionA.setText(questions.get(j).getOption_A());
         optionB.setText(questions.get(j).getOption_B());
@@ -141,7 +145,7 @@ private class QGCompetitiveThread extends Thread implements View.OnClickListener
         switch (v.getId()) {
             case R.id.buttonA:
                 if (correctAnswer.equals("A")) {
-                    points += (int)(System.currentTimeMillis()-startTime);
+                    points += ((10000 -(int)(System.currentTimeMillis()-startTime))/10);
                     numCorrect++;
                     running = false;
                     break;
@@ -152,7 +156,7 @@ private class QGCompetitiveThread extends Thread implements View.OnClickListener
 
             case R.id.buttonB:
                 if (correctAnswer.equals("B")) {
-                    points += (int)(System.currentTimeMillis()-startTime);
+                    points += ((10000 -(int)(System.currentTimeMillis()-startTime))/10);
                     numCorrect++;
                     running = false;
                     break;
@@ -163,7 +167,7 @@ private class QGCompetitiveThread extends Thread implements View.OnClickListener
 
             case R.id.buttonC:
                 if (correctAnswer.equals("C")) {
-                    points += (int)(System.currentTimeMillis()-startTime);
+                    points += ((10000 -(int)(System.currentTimeMillis()-startTime))/10);
                     numCorrect++;
                     running = false;
                     break;
@@ -174,7 +178,7 @@ private class QGCompetitiveThread extends Thread implements View.OnClickListener
 
             case R.id.buttonD:
                 if (correctAnswer.equals("D")) {
-                    points += (int)(System.currentTimeMillis()-startTime);
+                    points += ((10000 -(int)(System.currentTimeMillis()-startTime))/10);
                     numCorrect++;
                     running = false;
                     break;

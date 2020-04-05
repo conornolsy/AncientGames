@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.text.InputType;
 import android.widget.EditText;
-import android.widget.TextView;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class QuizSetUp {
 
@@ -24,8 +25,6 @@ public class QuizSetUp {
     private ArrayList<Integer> usedQuestions = new ArrayList<Integer>();
     private Context context;
     private int totalNumberQs;
-    private EditText editText;
-    private TextView textView;
 
     public QuizSetUp(Context context, int gameMode) {
         this.context = context;
@@ -39,23 +38,18 @@ public class QuizSetUp {
 
     }
 
-    public void setUpCompQuiz()
-    {
+    public void setUpCompQuiz() {
 
-    while(usedQuestions.size()<= 10) {
-        q_number = getRandom();
-        if (!usedQuestions.contains(q_number)) {
-            usedQuestions.add(q_number);
+        while (usedQuestions.size() < 10) {
+            q_number = getRandom();
+            if (!usedQuestions.contains(q_number)) {
+                usedQuestions.add(q_number);
+            }
+
         }
-
-    }
-
-        QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context,0);
+        QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context, 0);
         quizBackgroundRunner.execute(usedQuestions);
-
-
-
-}
+    }
 
 
     public void setUpLearnQuiz()
@@ -68,7 +62,7 @@ public class QuizSetUp {
 
     public int getRandom()
     {
-        double x = (Math.random() * ((12 - 1) + 1)) + 1;
+        double x = (Math.random() * ((21 - 1) + 1)) + 1;
         int y = (int)x;
         return y;
     }
@@ -138,25 +132,16 @@ public class QuizSetUp {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     alertDialog.hide();
+                    alertDialog.dismiss();
                     numberOfQuestions = input.getText().toString();
-                    if(Integer.parseInt(numberOfQuestions) <= Integer.parseInt(result))
-                    {
-                        while(usedQuestions.size()<= Integer.parseInt(numberOfQuestions)-1 ) {
-                            q_number = getRandom();
-                            if (!usedQuestions.contains(q_number)) {
-                                usedQuestions.add(q_number);
-                            }
-
+                       for(int i=1;i<=Integer.parseInt(numberOfQuestions);i++)
+                        {
+                                usedQuestions.add(i);
                         }
-
-                        alertDialog = new AlertDialog.Builder(context).create();
-                        alertDialog.setTitle("Loading");
-                        alertDialog.setMessage("Fetching Questions...");
-                        alertDialog.show();
-
+                        Collections.shuffle(usedQuestions);
                         QuizBackgroundRunner quizBackgroundRunner = new QuizBackgroundRunner(context,1);
                         quizBackgroundRunner.execute(usedQuestions);
-                    }
+
                 }
             });
 

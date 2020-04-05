@@ -51,7 +51,6 @@ public class OnThisDayParser {
                 continue;
             }
             String name = parser.getName();
-            // Starts by looking for the entry tag
             System.out.println(name);
             if (name.equals("item")) {
                 entries.add(readItem(parser));
@@ -80,7 +79,7 @@ public class OnThisDayParser {
         }
     }
 
-    private OTDItem readItem(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private FeedItem readItem(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "item");
         String title = null;
         String summary = null;
@@ -100,10 +99,9 @@ public class OnThisDayParser {
                 skipper(parser);
             }
         }
-        return new OTDItem(title, summary, link);
+        return new FeedItem(title, summary, link);
     }
 
-    // Processes title tags in the feed.
     private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "title");
         String title = readText(parser);
@@ -111,7 +109,6 @@ public class OnThisDayParser {
         return title;
     }
 
-    // Processes link tags in the feed.
     private String readLink(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "link");
         String link = readText(parser);
@@ -119,7 +116,6 @@ public class OnThisDayParser {
         return link;
     }
 
-    // Processes summary tags in the feed.
     private String readSummary(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "description");
         String summary = readText(parser);

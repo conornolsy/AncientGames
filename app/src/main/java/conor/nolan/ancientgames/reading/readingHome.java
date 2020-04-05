@@ -1,13 +1,8 @@
 package conor.nolan.ancientgames.reading;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.webkit.WebView;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
@@ -19,17 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import conor.nolan.ancientgames.R;
-import conor.nolan.ancientgames.onthisday.RSS.OTDItem;
-import conor.nolan.ancientgames.onthisday.RSS.OnThisDayParser;
-import conor.nolan.ancientgames.R;
+import conor.nolan.ancientgames.onthisday.RSS.FeedItem;
 
 public class readingHome extends AppCompatActivity {
     private String URL = "https://www.history.com/.rss/excerpt/news";
     private String title = null;
     private String url = null;
     private String summary = null;
-    private  List<OTDItem> items = null;
-    private static final String ns = null;
+    private  List<FeedItem> items = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +30,17 @@ public class readingHome extends AppCompatActivity {
         new RSSRunner().execute(URL);
     }
 
-
     private String loadArticlesFeed(String urlString) throws XmlPullParserException, IOException {
         InputStream stream = null;
-        OnThisDayParser onThisDayParser = new OnThisDayParser();
+        FeaturedArticlesParser featuredArticlesParser = new FeaturedArticlesParser();
         items = null;
         title = null;
         url = null;
         summary = null;
         Calendar rightNow = Calendar.getInstance();
         DateFormat formatter = new SimpleDateFormat("MMM dd h:mmaa");
-
-
-        StringBuilder htmlString = new StringBuilder();
-        htmlString.append("" +
+        StringBuilder html = new StringBuilder();
+        html.append("" +
                 "<body style=\"background-color:rgba(0,0,0,.01); " +
                 "color: white;\">" +
                 "<style>\n" +
@@ -72,51 +61,42 @@ public class readingHome extends AppCompatActivity {
                 "</style>Featured Articles<br>");
 
 
-        try {
+        try
+        {
             stream = downloadFeed(urlString);
-            items = onThisDayParser.parseXML(stream);
-            // Makes sure that the InputStream is closed after the app is
-            // finished using it.
-        } finally {
-            if (stream != null) {
+            items = featuredArticlesParser.parseXML(stream);
+        }
+        finally
+        {
+            if (stream != null)
+            {
                 stream.close();
             }
         }
-
-        // StackOverflowXmlParser returns a List (called "entries") of Entry objects.
-        // Each Entry object represents a single post in the XML feed.
-        // This section processes the entries list to combine each entry with HTML markup.
-        // Each entry is displayed in the UI as a link that optionally includes
-        // a text summary.
-        for (OTDItem item : items) {
-            htmlString.append("<table style=\"width:100%\">\n" +
+        for (FeedItem item : items)
+        {
+            html.append("<table style=\"width:100%\">\n" +
                     "  <tr>\n" +
                     "    <th>");
-            htmlString.append("<p style=\"color:#FFFFFF\"><a href='");
-            htmlString.append(item.link);
-            htmlString.append("'>" + item.title + "</a></p></th>  </tr>\n" +
+            html.append("<p style=\"color:#FFFFFF\"><a href='");
+            html.append(item.link);
+            html.append("'>" + item.title + "</a></p></th>  </tr>\n" +
                     "</table><br>");
-            // If the user set the preference to include summary text,
-            // adds it to the display.
-
         }
-        htmlString.append("<em>" + getResources().getString(R.string.updated) + " " +
+        html.append("<em>" + getResources().getString(R.string.updated) + " " +
                 formatter.format(rightNow.getTime()) + "</em>");
-        return htmlString.toString();
+        return html.toString();
     }
 
-    // Given a string representation of a URL, sets up a connection and gets
-// an input stream.
     private InputStream downloadFeed(String urlString) throws IOException {
         java.net.URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(10000 /* milliseconds */);
-        conn.setConnectTimeout(15000 /* milliseconds */);
-        conn.setRequestMethod("GET");
-        conn.setDoInput(true);
-        // Starts the query
-        conn.connect();
-        return conn.getInputStream();
+        HttpURLConnection connect = (HttpURLConnection) url.openConnection();
+        connect.setReadTimeout(10000);
+        connect.setConnectTimeout(15000);
+        connect.setRequestMethod("GET");
+        connect.setDoInput(true);
+        connect.connect();
+        return connect.getInputStream();
     }
 
     private class RSSRunner extends AsyncTask<String, Void, String> {
@@ -138,6 +118,7 @@ public class readingHome extends AppCompatActivity {
             featuredArticlesLinks.setBackgroundColor(android.graphics.Color.TRANSPARENT);
             featuredArticlesLinks.setBackgroundResource(R.drawable.webviewbg );
             featuredArticlesLinks.loadData(result, "text/html", null);
+
         }
     }
 

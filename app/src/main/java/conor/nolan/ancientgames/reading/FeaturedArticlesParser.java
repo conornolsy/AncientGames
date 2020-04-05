@@ -1,18 +1,16 @@
 package conor.nolan.ancientgames.reading;
 
 import android.util.Xml;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import conor.nolan.ancientgames.onthisday.RSS.FeedItem;
 
-import conor.nolan.ancientgames.onthisday.RSS.OTDItem;
-
-public class FeaturedArticlesParser {
+public class FeaturedArticlesParser
+{
     private static final String ns = null;
 
     public List parseXML(InputStream in) throws XmlPullParserException, IOException {
@@ -31,7 +29,8 @@ public class FeaturedArticlesParser {
 
         parser.require(XmlPullParser.START_TAG, ns, "rss");
         while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG)
+            {
                 continue;
             }
             String name = parser.getName();
@@ -50,11 +49,11 @@ public class FeaturedArticlesParser {
 
         parser.require(XmlPullParser.START_TAG, ns, "channel");
         while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG)
+            {
                 continue;
             }
             String name = parser.getName();
-            // Starts by looking for the entry tag
             System.out.println(name);
             if (name.equals("item")) {
                 entries.add(readItem(parser));
@@ -72,7 +71,8 @@ public class FeaturedArticlesParser {
         }
         int depth = 1;
         while (depth != 0) {
-            switch (parser.next()) {
+            switch (parser.next())
+            {
                 case XmlPullParser.END_TAG:
                     depth--;
                     break;
@@ -83,7 +83,7 @@ public class FeaturedArticlesParser {
         }
     }
 
-    private OTDItem readItem(XmlPullParser parser) throws XmlPullParserException, IOException {
+    private FeedItem readItem(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "item");
         String title = null;
         String summary = null;
@@ -103,10 +103,9 @@ public class FeaturedArticlesParser {
                 skipper(parser);
             }
         }
-        return new OTDItem(title, summary, link);
+        return new FeedItem(title, summary, link);
     }
 
-    // Processes title tags in the feed.
     private String readTitle(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "title");
         String title = readText(parser);
@@ -114,7 +113,6 @@ public class FeaturedArticlesParser {
         return title;
     }
 
-    // Processes link tags in the feed.
     private String readLink(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "link");
         String link = readText(parser);
@@ -122,7 +120,6 @@ public class FeaturedArticlesParser {
         return link;
     }
 
-    // Processes summary tags in the feed.
     private String readSummary(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "description");
         String summary = readText(parser);

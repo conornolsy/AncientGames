@@ -6,13 +6,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
 import conor.nolan.ancientgames.onthisday.OnThisDay;
 import conor.nolan.ancientgames.quiz.QuizSelectMode;
 import conor.nolan.ancientgames.reading.readingHome;
@@ -32,6 +34,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     private int i =0;
     private Handler handler;
     private Animation animFadeIn,animFadeOut;
+    private Button reading;
+    private Button onThisDay;
+    private Button quiz;
+    private Handler buttonClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +110,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
                     try {
                         Thread.sleep(2000);
-                        //   display.setVisibility(View.INVISIBLE);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                         msg = e.getMessage();
@@ -144,7 +149,5 @@ public class HomeScreenActivity extends AppCompatActivity {
         Intent intent = new Intent(this, OnThisDay.class);
         startActivity(intent);
     }
-
-
 
 }

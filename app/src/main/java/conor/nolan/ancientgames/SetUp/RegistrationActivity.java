@@ -2,25 +2,27 @@ package conor.nolan.ancientgames.SetUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import java.util.ArrayList;
 
 
 import conor.nolan.ancientgames.R;
 
-public class Registration extends AppCompatActivity  implements BackgroundRunner.OnMessageListener {
+public class RegistrationActivity extends AppCompatActivity  implements BackgroundRunner.OnMessageListener {
 
     private EditText email, username, password, confrimPassword;
-    private ImageView background;
     private ArrayList<ImageView> images = new ArrayList<>();
     private ImageView display;
     private ImageView background1;
@@ -30,10 +32,14 @@ public class Registration extends AppCompatActivity  implements BackgroundRunner
     private ImageView background5;
     private ImageView background4;
     private ImageView background7;
+    private Context context;
     private String msg;
     private int i =0;
     private Handler handler;
     private Animation animFadeIn,animFadeOut;
+    private Button login;
+    private Handler buttonClicked;
+    private Handler regUnsuccessful;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,9 @@ public class Registration extends AppCompatActivity  implements BackgroundRunner
         email = (EditText) findViewById(R.id.email);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
+        login = (Button) findViewById(R.id.button4);
+        login.setEnabled(true);
+        login.setVisibility(View.VISIBLE);
         confrimPassword = (EditText) findViewById(R.id.confirmPassword);
         background1 = (ImageView) findViewById(R.id.background_sulla);
         background1.setVisibility(View.VISIBLE);
@@ -65,8 +74,34 @@ public class Registration extends AppCompatActivity  implements BackgroundRunner
         images.add(background5);
         images.add(background6);
         images.add(background7);
+        username.setVisibility(View.VISIBLE);
+        password.setVisibility(View.VISIBLE);
+        confrimPassword.setVisibility(View.VISIBLE);
+        password.setVisibility(View.VISIBLE);
+        context =this;
         go();
-
+        buttonClicked = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                login.setEnabled(false);
+                login.setVisibility(View.INVISIBLE);
+                username.setVisibility(View.INVISIBLE);
+                password.setVisibility(View.INVISIBLE);
+                confrimPassword.setVisibility(View.INVISIBLE);
+                email.setVisibility(View.INVISIBLE);
+            }
+        };
+        regUnsuccessful = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                login.setEnabled(true);
+                login.setVisibility(View.VISIBLE);
+                username.setVisibility(View.VISIBLE);
+                password.setVisibility(View.VISIBLE);
+                confrimPassword.setVisibility(View.VISIBLE);
+                email.setVisibility(View.VISIBLE);
+            }
+        };
 
     }
 
@@ -135,24 +170,29 @@ public class Registration extends AppCompatActivity  implements BackgroundRunner
 
     public void onRegister(View view)
     {
+        Message message = buttonClicked.obtainMessage();
+        message.sendToTarget();
         String e = email.getText().toString();
         String u = username.getText().toString();
         String p = password.getText().toString();
         String pC = confrimPassword.getText().toString();
         String t = "register";
-        BackgroundRunner backgroundRunner = new BackgroundRunner(this);
-        backgroundRunner.execute(t, u, p, e, pC);
-
-
-
-
+        MessageController register= new MessageController(context);
+        register.register(t, u, p, e, pC);
 
     }
-
     @Override
     public void messageCallback(String response) {
         Log.i("MainActivity", "Response: " + response);
         System.out.println("Repsonse:    !!!   :   "+response);
-        finish();
+
+        if(response=="Sign In activity successful") {
+            finish();
+        }
+        else{
+
+            Message message = regUnsuccessful.obtainMessage();
+            message.sendToTarget();
+        }
     }
 }

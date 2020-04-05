@@ -31,7 +31,6 @@ public class QuizGameLearnMode extends AppCompatActivity {
     private Context context;
     private int points = 0;
     private TextView pointsView;
-    private long startTime;
     private boolean running = true;
     private Handler delay;
     private Handler handlerGetResults;
@@ -86,9 +85,6 @@ public class QuizGameLearnMode extends AppCompatActivity {
         optionD.setText(questions.get(j).getOption_D());
         correctAnswer = questions.get(j).getCorrect_Answer();
     }
-
-
-
 
     private class QGLearningThread extends Thread implements View.OnClickListener
     {

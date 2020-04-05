@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_caeser"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".HomeScreenActivity"></activity>
+        <activity android:name=".SetUp.RegistrationActivity"></activity>
+        <activity android:name=".HomeScreenActivity" />
         <activity
             android:name=".quiz.QuizLeaderboard"
             android:label="@string/title_activity_quiz_leaderboard"
@@ -31,10 +32,8 @@
         <activity android:name=".quiz.CompetitiveMode.QuizGame" />
         <activity android:name=".onthisday.OnThisDay" />
         <activity android:name=".SetUp.SignInActivity" />
-        <activity android:name=".SetUp.Registration" />
         <activity android:name=".SetUp.LoginActivity" />
         <activity android:name=".reading.readingHome" />
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".SetUp.LoadingAnimation"
             android:theme="@style/Theme.AppCompat.NoActionBar">

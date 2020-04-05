@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +20,7 @@ import java.util.ArrayList;
 
 import conor.nolan.ancientgames.R;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements BackgroundRunner.OnMessageListener {
 
     private ArrayList<ImageView> images = new ArrayList<>();
     private ImageView display;
@@ -28,11 +32,13 @@ public class SignInActivity extends AppCompatActivity {
     private ImageView background4;
     private ImageView background7;
     private TextView textView;
-
+    private Button login;
+    private Button register;
     private String msg;
     private int i =0;
     private Handler handler;
     private Animation animFadeIn,animFadeOut;
+    private Handler buttonClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,10 @@ public class SignInActivity extends AppCompatActivity {
         textView.setVisibility(View.VISIBLE);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(20);
+        login = (Button) findViewById(R.id.login_button);
+        login.setEnabled(true);
+        register = (Button) findViewById(R.id.register_button);
+        register.setEnabled(true);
         images.add(background1);
         images.add(background2);
         images.add(background3);
@@ -65,6 +75,14 @@ public class SignInActivity extends AppCompatActivity {
         images.add(background6);
         images.add(background7);
         go();
+
+        buttonClicked = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
+                login.setEnabled(false);
+                register.setEnabled(false);
+            }
+        };
     }
 
     private void go() {
@@ -91,18 +109,16 @@ public class SignInActivity extends AppCompatActivity {
                             R.anim.fade_in);
                     animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),
                             R.anim.fade_out);
-
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
                             display.startAnimation(animFadeIn);
                             textView.bringToFront();
-
                         }
                     });
 
-                    try {
+                    try
+                    {
                         Thread.sleep(2000);
                         //   display.setVisibility(View.INVISIBLE);
                     } catch (InterruptedException e) {
@@ -133,11 +149,28 @@ public class SignInActivity extends AppCompatActivity {
     public void loginClicked(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        Message message = buttonClicked.obtainMessage();
+        message.sendToTarget();
     }
 
     public void signUpClick(View view) {
-        Intent intent = new Intent(this, Registration.class);
+        Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+        Message message = buttonClicked.obtainMessage();
+        message.sendToTarget();
+    }
+
+
+   @Override
+    protected void onResume() {
+        super.onResume();
+        login.setEnabled(true);
+        register.setEnabled(true);
+    }
+
+    @Override
+    public void messageCallback(String response) {
+        finish();
     }
 
 }

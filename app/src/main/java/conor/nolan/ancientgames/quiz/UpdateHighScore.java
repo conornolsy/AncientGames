@@ -2,9 +2,7 @@ package conor.nolan.ancientgames.quiz;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -16,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
 
 public class UpdateHighScore extends AsyncTask<String,String,String> {
@@ -53,8 +50,6 @@ public class UpdateHighScore extends AsyncTask<String,String,String> {
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();
-
-
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(inputStream,"iso-8859-1")));
             String result="";

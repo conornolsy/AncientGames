@@ -4,31 +4,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.view.View;
 import android.widget.TextView;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-
 import conor.nolan.ancientgames.R;
-import conor.nolan.ancientgames.quiz.LearningMode.Facts;
 
 public class QuizLeaderboard extends AppCompatActivity {
 
@@ -50,15 +37,6 @@ public class QuizLeaderboard extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         GetLeaderboard getLeaderboard = new GetLeaderboard();
         getLeaderboard.execute();
     }
@@ -75,7 +53,6 @@ public class QuizLeaderboard extends AppCompatActivity {
 
 
     private class GetLeaderboard extends AsyncTask<ArrayList,String,String> {
-
 
         protected String doInBackground(ArrayList... params) {
             try {

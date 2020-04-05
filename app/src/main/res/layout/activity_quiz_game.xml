@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/question"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:fontFamily="@font/smudgestick"
         android:gravity="center"
         android:text="@string/question"
@@ -37,7 +37,7 @@
     <Button
         android:id="@+id/buttonD"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
     <Button
         android:id="@+id/buttonB"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toTopOf="@+id/buttonC"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +59,7 @@
     <Button
         android:id="@+id/buttonC"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toTopOf="@+id/buttonD"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
     <Button
         android:id="@+id/buttonA"
         android:layout_width="320dp"
-        android:layout_height="40dp"
+        android:layout_height="32dp"
         android:background="@drawable/bg1"
         app:layout_constraintBottom_toTopOf="@+id/buttonB"
         app:layout_constraintEnd_toEndOf="parent"
